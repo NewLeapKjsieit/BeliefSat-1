@@ -3,7 +3,7 @@ on:
   push:
     paths: 
       - './firmware/*.cpp'
-      - './.github/workflows/test-compile.yml'
+      - './.github/workflows/*.yml'
       - './firmware/*.h'
       - './firmware/*.c'
       - './firmware/*.ino'
