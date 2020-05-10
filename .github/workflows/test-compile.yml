@@ -1,0 +1,40 @@
+name: compile-test
+on:
+  push:
+    paths: 
+      - './firmware/*.cpp'
+      - './.github/workflow/test-compile.yml'
+      - './firmware/*.h'
+      - './firmware/*.c'
+      - './firmware/*.ino'
+  pull_request:
+jobs:
+  build:
+    name: ${{matrix.arduino-platform }} - test compiling
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arduino-platform: ["MightyCore:avr"]
+        include:
+          - arduino-platform: MightyCore:avr
+            fqbn: "MightyCore:avr::1284:pinout=standard,variant=modelP,BOD=2v7,LTO=Os,clock=8MHz_external"
+            platform-url: https://mcudude.github.io/MightyCore/package_MCUdude_MightyCore_index.json
+            required_libraries: "Radiolib DRA818"
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@1.0.0
+        
+      - name: Install platform
+        run: |
+          arduino-cli config init --additional-urls ${{platform-url}}
+          arduino-cli core update-index
+          arduino-cli core install ${{ matrix.arduino-platform }}
+          arduino-cli lib inastall ${{matrix.required_libraries}}
+      - name: Compile
+        run: |
+          arduino-cli compile --fqbn ${{matrix.fqbn}} ./firmware
+       
