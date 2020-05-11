@@ -1,13 +1,5 @@
 name: compile-test
-on:
-  push:
-    paths: 
-      - './firmware/'
-      - './.github/workflows/'
-  pull_request:
-    paths:
-      - './firmware/'
-      - './.github/workflows/'
+on: [push,pull_request]
 jobs:
   build:
     name: ${{matrix.arduino-platform }} - test compiling
