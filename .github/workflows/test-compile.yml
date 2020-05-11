@@ -2,18 +2,12 @@ name: compile-test
 on:
   push:
     paths: 
-      - './firmware/*.cpp'
-      - './.github/workflows/*.yml'
-      - './firmware/*.h'
-      - './firmware/*.c'
-      - './firmware/*.ino'
+      - './firmware/'
+      - './.github/workflows/'
   pull_request:
     paths:
-      - './firmware/*.cpp'
-      - './.github/workflows/*.yml'
-      - './firmware/*.h'
-      - './firmware/*.c'
-      - './firmware/*.ino'
+      - './firmware/'
+      - './.github/workflows/'
 jobs:
   build:
     name: ${{matrix.arduino-platform }} - test compiling
