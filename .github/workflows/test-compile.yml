@@ -9,7 +9,7 @@ jobs:
         arduino-platform: ["MightyCore:avr"]
         include:
           - arduino-platform: MightyCore:avr
-            fqbn: "MightyCore:avr::1284:pinout=standard,variant=modelP,BOD=2v7,LTO=Os,clock=8MHz_external"
+            fqbn: "MightyCore:avr:1284:pinout=standard,variant=modelP,BOD=2v7,LTO=Os,clock=8MHz_external"
             platform-url: https://mcudude.github.io/MightyCore/package_MCUdude_MightyCore_index.json
             required_libraries: "Radiolib DRA818"
       fail-fast: false
