@@ -29,5 +29,5 @@ jobs:
           arduino-cli lib install ${{matrix.required_libraries}}
       - name: Compile
         run: |
-          arduino-cli compile --fqbn ${{matrix.fqbn}} ./firmware
+          arduino-cli compile --fqbn ${{matrix.fqbn}} ./Firmware
        
