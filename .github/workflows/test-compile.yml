@@ -25,6 +25,7 @@ jobs:
         run: |
           arduino-cli config init --additional-urls ${{matrix.platform-url}}
           arduino-cli core update-index
+          arduino-cli core install arduino:avr
           arduino-cli core install ${{ matrix.arduino-platform }}
           arduino-cli lib install ${{matrix.required_libraries}}
       - name: Compile
