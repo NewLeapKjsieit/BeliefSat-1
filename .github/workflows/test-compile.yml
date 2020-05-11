@@ -8,6 +8,12 @@ on:
       - './firmware/*.c'
       - './firmware/*.ino'
   pull_request:
+    paths:
+      - './firmware/*.cpp'
+      - './.github/workflows/*.yml'
+      - './firmware/*.h'
+      - './firmware/*.c'
+      - './firmware/*.ino'
 jobs:
   build:
     name: ${{matrix.arduino-platform }} - test compiling
@@ -30,7 +36,7 @@ jobs:
         
       - name: Install platform
         run: |
-          arduino-cli config init --additional-urls ${{platform-url}}
+          arduino-cli config init --additional-urls ${{matrix.platform-url}}
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.arduino-platform }}
           arduino-cli lib inastall ${{matrix.required_libraries}}
