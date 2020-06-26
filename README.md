@@ -25,7 +25,13 @@ The satellite is powered by AltaDevices Single Juntion cells ([which unfortunate
  * **Reciever Sensitivity :** -123 dbm @1.2kbps and bw=20khz (As per datasheet, observed sensititvity yet to be calculated)
 
 ***Antenna***
+
 Dipole made from measuring tape, which is in folded state during launch. Once in orbit, fishing cord which holds the antenna in folded position, is burnt by heating a resistor around which it is tied.
 
 ***Link Budget***
 
+* **Orbit Height :** 500 Km (proposed, may vary as per allocation by launch provider)
+* **Slant Range at 15 degree elevation :** 1408 Km (approximately)
+* **Free Space Path Loss at this distance :** 148.2 dbm 
+* **Received power neglecting mismatch,connector,atmospheric, pointing and polarization losses and receiving and transmitting antenna gains :** -118.2/121.2 (op= 30/27dbm)
+* **Note :** A good directional antenna at receving groundstation (e.g. a 6 element yagi, plans for which will be released soon) can ensure the above mentioned losses are made up for and the signals can be received at even lower angles. However, to ensure best performance, circular polarized antennas copuled with a good LNA (e.g. [LNA4ALL](http://lna4all.blogspot.com/)) mounted over a Azimuth-Elevation antenna rotator (e.g. [Satnogs rotator](https://wiki.satnogs.org/SatNOGS_Rotator_v3)/[Sarcnet Rotator](https://www.sarcnet.org/rotator-mk2.html#RotatorMk2a)/[Yaesu G5500](https://www.yaesu.com/indexVS.cfm?cmd=DisplayProducts&ProdCatID=104&encProdID=79A89CEC477AA3B819EE02831F3FD5B8)/[WRAPS portable antenna rotator](https://ukamsat.files.wordpress.com/2013/12/wraps-mark-spencer-wa8sme-qst-jan-2014-copyright-arrl.pdf)) is recommended.
