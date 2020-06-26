@@ -44,6 +44,22 @@ Dipole made from measuring tape, which is in folded state during launch. Once in
 * **Command Uplink :** 1200
 * **Digipeater Uplink :** 1200
 
-***Band usage and how the satellite complies with the requirment of turning off the transmitters when required :*** All the uplinks and downlinks occur on same frequency. Reciever is disabled while transmitting, to avoid interrupts to controller during the transmission, however, these transmissions last no more than 2 sec (except when transmitting image, when single transmission may last upto 120 sec but no more than that, and there is gap of more than 300 secs between such long trsnmissions during automatic transmit mode). This will ensure that one can relay a command during any pass. Also the transmitter is implemented to be active only when microcontroller is active, so if the main computer fails, the transmitter won't turn on. If the spacecraft computer is hung up for more than 8 sec, it resets along with the transciever. The automatic image capture mode is automatically turned off if battery voltage falls, thus adding extra layer of governance on the mode where long and continous transmission occurs. The satellite is designed to automatically turn off the microcontroller and thus the transciever in case of any thermal or short-circuit event. It is also protected against latchup situations caused by brown-outs or radiation flipping a bit, by the means of internal watchdog, which resets non-responsive or improperly finctioning controller after 8 sec. Whenever, required, satellites transmitters can be turned off until next command to turn those on by uplinking a command to do so. If the shut-down request comes when there is no pass over parent groundstation, the uplink packe format can be shared with a station which will have nearest pass.
+***How the satellite complies with the requirment of turning off the transmitters when required ?***
+All the uplinks and downlinks occur on same frequency. Reciever is disabled while transmitting, to avoid interrupts to controller during the transmission, however, these transmissions last no more than 2 sec (except when transmitting image, when single transmission may last upto 120 sec but no more than that, and there is gap of more than 300 secs between such long trsnmissions during automatic transmit mode). This will ensure that one can relay a command during any pass. Also the transmitter is implemented to be active only when microcontroller is active, so if the main computer fails, the transmitter won't turn on. If the spacecraft computer is hung up for more than 8 sec, it resets along with the transciever. The automatic image capture mode is automatically turned off if battery voltage falls, thus adding extra layer of governance on the mode where long and continous transmission occurs. The satellite is designed to automatically turn off the microcontroller and thus the transciever in case of any thermal or short-circuit event. It is also protected against latchup situations caused by brown-outs or radiation flipping a bit, by the means of internal watchdog, which resets non-responsive or improperly finctioning controller after 8 sec. Whenever, required, satellites transmitters can be turned off until next command to turn those on by uplinking a command to do so. If the shut-down request comes when there is no pass over parent groundstation, the uplink packe format can be shared with a station which will have nearest pass.
+
+## What are different packet types and packet formats ?
+***Telemetry Packet***
+
+
+
+***Digipeater Uplink Packet***
+
+
+
+***Digipeater Downlink Packet***
+
+
+
+***SSDV Image packet***
 
 
