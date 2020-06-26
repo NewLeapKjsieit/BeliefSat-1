@@ -16,15 +16,16 @@ The satellite is powered by AltaDevices Single Juntion cells ([which unfortunate
 
 ## How does it communicate?
 
-###Transciever Specs
+***Transciever Specs***
+
 **Name :** [LORA1268F30](https://www.nicerf.com/product_193_312.html)
 **Frequency :** Yet to be coordinated by [IARU](https://www.iaru.org/) but will be in UHF HAM Band
 **Modulation :** MSK (FSK with Fdev= 0.25*data_rate)
 **Output Power :** 1W in Normal mode and 0.5W while in Safe mode to save power
 **Reciever Sensitivity :** -123 dbm @1.2kbps and bw=20khz (As per datasheet, observed sensititvity yet to be calculated)
 
-###Antenna
+***Antenna***
 Dipole made from measuring tape, which is in folded state during launch. Once in orbit, fishing cord which holds the antenna in folded position, is burnt by heating a resistor around which it is tied.
 
-###Link Budget
+***Link Budget***
 
