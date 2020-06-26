@@ -13,3 +13,18 @@ BeliefSat is a 2p-PocketQube standard student nano-satellite being developed by 
 
 ## How is it powered?
 The satellite is powered by AltaDevices Single Juntion cells ([which unfortunately are out of buisness as of date of writing](https://pv-magazine-usa.com/2019/12/31/shutdown-continues-at-hanergy-owned-alta-devices-high-efficiency-pv-pioneer/)). Each of these cell produce 0.25W power when illumniated at intensity of 1000W/m^2. There are 4 such cells on long sides and 2 on shorter sides. So when illuminated, satellite may produce 0.5W watt/1watt/>1W depending on the orientation. The power remaining after being used is then stored in 2 parallely connected [2600mah Samsung 18650 batteries](https://robokits.co.in/batteries-chargers/samsung-premium-li-ion-battery/3.7v-samsung-li-ion-batteries/samsung-icr-18650-26j-2600mah-li-ion-cell-original?gclid=CjwKCAjwltH3BRB6EiwAhj0IUHaLyAB-D4SHw_PhNjM4cJyQy68a7cGyKCsCMS-I6JLJSGFChlp92BoC6-4QAvD_BwE). [SPV1040](https://www.st.com/en/power-management/spv1040.html) is used on every panel for maximum power point tracking and giving regulated voltage from the solar cells. The choice of SPV1040 was made based on flight history in [FossaSat-1](https://github.com/FOSSASystems/FOSSASAT-1). Now that AltaDevices cells won't be available in market, team will also be making one prototype with [SM141K06L by IXYS](https://www.digikey.com/product-detail/en/ixys/SM141K06L/SM141K06L-ND/9990462) and will be publishing test results for it too. Along with other things, Every solar panel has a [INA219](https://www.ti.com/product/INA219) current sensor and [OPT3001](https://www.ti.com/lit/ds/symlink/opt3001.pdf?ts=1593144788653&ref_url=https%253A%252F%252Fwww.google.com%252F). Making a solar panel a complete module.
+
+## How does it communicate?
+
+###Transciever Specs
+**Name :** [LORA1268F30](https://www.nicerf.com/product_193_312.html)
+**Frequency :** Yet to be coordinated by [IARU](https://www.iaru.org/) but will be in UHF HAM Band
+**Modulation :** MSK (FSK with Fdev= 0.25*data_rate)
+**Output Power :** 1W in Normal mode and 0.5W while in Safe mode to save power
+**Reciever Sensitivity :** -123 dbm @1.2kbps and bw=20khz (As per datasheet, observed sensititvity yet to be calculated)
+
+###Antenna
+Dipole made from measuring tape, which is in folded state during launch. Once in orbit, fishing cord which holds the antenna in folded position, is burnt by heating a resistor around which it is tied.
+
+###Link Budget
+
