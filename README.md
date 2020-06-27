@@ -50,15 +50,31 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 ## What are different packet types and packet formats ?
 ***Telemetry Packet***
 
+|       | Packet Type Indicator | Call Sign | Resets | Packet No. | Mode | Sensor Data | CRC | RS Parity |
+| :---: | :-------------------: | :-------: | :----: | :--------: | :--: | :---------: | :-: | :-------: |
+| Bytes | 1 | 6 | 2 | 4 | 1 | 42 | 2 | 32 |
+| Index | 0 | 1 | 7 | 9 | 13 | 14 | 56 | 58 |
 
+***Sensor Data***
+
+|       | Temperature Sensor 1 | Temperature Sensor 2 | Magnetometer (x,y,z) | Gyrosensor (x,y,z) | Ambient Light| Solar Panel Power | Battery Voltage | Battery State Of Charge|
+| :---: | :------------------: | :------------------: | :------------------: | :----------------: | :----------: | :---------------: | :-------------: | :--------------------: |
+| Bytes | 2 | 2 | 6 | 6 | 12 | 10 | 2 | 2 |
+| Index | 14 | 16 | 18 | 24 | 30 | 42 | 52 | 54 |
 
 ***Digipeater Uplink Packet***
 
-
+|       | Packet Type (0xF5) | Sender Callsign | Sat Callsign | Controll Bytes (0x55 0x55 0x55) | RS Bytes | Message |
+| :---: | :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
+| Bytes | 1 | 6 | 6 | 3 | 32 | 42 |
+| Index | 0 | 1 | 7 | 13 | 16 | 48 |
 
 ***Digipeater Downlink Packet***
 
-
+|       | Packet Type (0xFF) | Sat Callsign | Sender Callsign | Ligitimizer (0x47) | Message | CRC-CCITT | RS Bytes |
+| :---: | :----------------: | :----------: | :-------------: | :----------------: | :-----: | :-------: | :------: |
+| Bytes | 1 | 6 | 6 | 1 | 42 | 2 | 32 |
+| Index | 0 | 1 | 7 | 13 | 14 | 56 | 58 |
 
 ***SSDV Image packet***
 
