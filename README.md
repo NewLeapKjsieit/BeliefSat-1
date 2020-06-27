@@ -50,7 +50,18 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 ## What are different packet types and packet formats ?
 ***Telemetry Packet***
 
+|       | Packet Type Indicator | Call Sign | Resets | Packet No. | Mode | Sensor Data | CRC | RS Parity |
+| :---: | :-------------------: | :-------: | :----: | :--------: | :--: | :---------: | :-: | :-------: |
+| Bytes | 1 | 6 | 2 | 4 | 1 | 42 | 2 | 32 |
+| Index | 0 | 1 | 7 | 9 | 13 | 14 | 56 | 58 |
+| Type | Byte | Char | uint16 | uint32 | Byte | Byte | Byte | Byte |
 
+**Sensor Data**
+
+|       | Temperature Sensor 1 | Temperature Sensor 2 | Magnetometer (x,y,z) | Gyrosensor (x,y,z) | Ambient Light| Solar Panel Power | Battery Voltage | Battery State Of Charge|
+| :---: | :------------------: | :------------------: | :------------------: | :----------------: | :----------: | :---------------: | :-------------: | :--------------------: |
+| Bytes | 2 | 2 | 6 | 6 | 12 | 10 | 2 | 2 |
+| Index | 14 | 16 | 18 | 24 | 30 | 42 | 52 | 54 |
 
 ***Digipeater Uplink Packet***
 
