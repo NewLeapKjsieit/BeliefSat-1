@@ -16,6 +16,9 @@ Aluminium or its alloys, but using our novel approach we were able to design a v
 This is a concept render of our BeliefSat:
 
 
+![SATFOlded](https://user-images.githubusercontent.com/67508161/85923794-c3ac7880-b8ab-11ea-8a19-435cf76c867a.jpg)
+
+
 The dimension of the BeliefSat is in accordance with the PocketQube Standards. This standard includes a base plate on which the satellite is mounted and then it slides out of 
 the satellite deployer via rails. As per the standards, our BeliefSat is 2P ie, Base plate is 58mm x 128mm x 1.6mm (WxLxH), whereas the satellite is 50mm x 50mm x 114mm (WxLxH).
 The estimated mass of BeliefSat is around 400 grams.
