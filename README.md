@@ -54,9 +54,8 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 | :---: | :-------------------: | :-------: | :----: | :--------: | :--: | :---------: | :-: | :-------: |
 | Bytes | 1 | 6 | 2 | 4 | 1 | 42 | 2 | 32 |
 | Index | 0 | 1 | 7 | 9 | 13 | 14 | 56 | 58 |
-| Type | Byte | Char | uint16 | uint32 | Byte | Byte | Byte | Byte |
 
-**Sensor Data**
+***Sensor Data***
 
 |       | Temperature Sensor 1 | Temperature Sensor 2 | Magnetometer (x,y,z) | Gyrosensor (x,y,z) | Ambient Light| Solar Panel Power | Battery Voltage | Battery State Of Charge|
 | :---: | :------------------: | :------------------: | :------------------: | :----------------: | :----------: | :---------------: | :-------------: | :--------------------: |
@@ -65,17 +64,17 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 
 ***Digipeater Uplink Packet***
 
-| Packet Type (0xF5) | Sender Callsign | Sat Callsign | Controll Bytes (0x55 0x55 0x55) | RS Bytes | Message |
-| :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
-| 1 | 6 | 6 | 3 | 32 | 42 |
-| 0 | 1 | 7 | 13 | 16 | 48 |
+|       | Packet Type (0xF5) | Sender Callsign | Sat Callsign | Controll Bytes (0x55 0x55 0x55) | RS Bytes | Message |
+| :---: | :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
+| Bytes | 1 | 6 | 6 | 3 | 32 | 42 |
+| Index | 0 | 1 | 7 | 13 | 16 | 48 |
 
 ***Digipeater Downlink Packet***
 
-| Packet Type (0xFF) | Sat Callsign | Sender Callsign | Controll Bytes ("H","I","!") | Message | RS Bytes |
-| :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
-| 1 | 6 | 6 | 3 | 42 | 32 |
-| 0 | 1 | 7 | 13 | 16 | 58 |
+|       | Packet Type (0xFF) | Sat Callsign | Sender Callsign | Controll Bytes ("H","I","!") | Message | RS Bytes |
+| :---: | :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
+| Bytes | 1 | 6 | 6 | 3 | 42 | 32 |
+| Index | 0 | 1 | 7 | 13 | 16 | 58 |
 
 ***SSDV Image packet***
 
