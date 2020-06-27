@@ -54,7 +54,10 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 
 ***Digipeater Uplink Packet***
 
-
+| Packet Type | Sender Callsign | Sat Callsign | Controll Bytes (0x55 0x55 0x55) | RS Bytes | Message |
+| :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
+| 1 | 6 | 6 | 3 | 32 | 42 |
+| 0 | 1 | 7 | 13 | 16 | 48 |
 
 ***Digipeater Downlink Packet***
 
