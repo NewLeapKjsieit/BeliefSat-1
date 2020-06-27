@@ -72,7 +72,7 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 
 ***Digipeater Downlink Packet***
 
-| Packet Type (0xFF) | Sender Callsign | Sat Callsign | Controll Bytes ("H","I","!") | Message | RS Bytes |
+| Packet Type (0xFF) | Sat Callsign | Sender Callsign | Controll Bytes ("H","I","!") | Message | RS Bytes |
 | :---------: | :-------------: | :----------: | :-----------------------------: | :------: | :-----: |
 | 1 | 6 | 6 | 3 | 42 | 32 |
 | 0 | 1 | 7 | 13 | 16 | 58 |
