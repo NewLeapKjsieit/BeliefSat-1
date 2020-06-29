@@ -95,5 +95,5 @@ Standard SSDV packet format specified by UKHAS (https://ukhas.org.uk/guides:ssdv
 
 64 alternating bits as preamble and CCSDS Sync word **0x1ACFFC1D** will be added before all of the above defined packets by the transciever. While doing uplink, one must either add these in the string being uplinked or, should set the tranciever modules to accordingly to add these to the packets.
 
-** Reed-solomon FEC **
+**Reed-solomon FEC**
 The FEC used to encode all the above mentioned packets is Reed-Solomon FEC implementation by [Philip Heron](https://github.com/fsphil) in [SSDV Project](https://github.com/fsphil/ssdv) and [Hadie Project](https://github.com/fsphil/hadie), which itself is based on portable implementation by [Phil Karn](http://www.ka9q.net/) available at http://www.ka9q.net/code/fec/ . The reciever implementers should take this into account and use the compatible decoder to avoid errors.  
