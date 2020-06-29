@@ -103,8 +103,8 @@ The FEC used to encode all the above mentioned packets is Reed-Solomon FEC imple
 **References for converting Sensor data into readable format**
 1. Ambient Light Sensor (OPT3001) :- [Datasheet](https://www.ti.com/lit/ds/symlink/opt3001.pdf?ts=1593455018360&ref_url=https%253A%252F%252Fwww.google.com%252F) (Refer page 20 ) [Implementation code](https://cdn.instructables.com/ORIG/FCI/JGX9/JFBMPFVZ/FCIJGX9JFBMPFVZ.ino) (Refer lines 38-44 )
 2. Temperature Sensor (LM75) :- [Datasheet](https://datasheets.maximintegrated.com/en/ds/LM75.pdf) (Refer page 6) 
-3. Gyro Sensor (MPU-6050) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
-4. Magnetometer (HMC52883L) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
-5. Current/Power Sensor (INA219) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
-6. Battery voltage and State of charge sensor (MAX17043G+U) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
+3. Gyro Sensor (MPU-6050) :- [Datasheet](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf) 
+4. Magnetometer (HMC5883L) :- [Datasheet](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf) 
+5. Current/Power Sensor (INA219) :- [Datasheet](https://www.ti.com/lit/ds/symlink/ina219.pdf?ts=1593455980944&ref_url=https%253A%252F%252Fwww.google.com%252F) 
+6. Battery voltage and State of charge sensor (MAX17043G+U) :- [Datasheet](https://datasheets.maximintegrated.com/en/ds/MAX17043-MAX17044.pdf) 
 
