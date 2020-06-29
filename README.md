@@ -89,6 +89,7 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 | Index | 0 | 1 | 7 | 13 | 14 | 56 | 58 |
 
 ***SSDV Image packet***
+
 Standard SSDV packet format specified by UKHAS (https://ukhas.org.uk/guides:ssdv) will be followed for sending the images captured. However, the first byte i.e. sync byte in the packet will be skipped, so as to make the packet length 255 byte instead of 256 as 255 is the maximum length of packet that the used tranciever can accomodate. The recievers must add the sync byte (0x55) before forwarding the packets to the SSDV servers or running the packets through SSDV decoders. 
 
 **Preamble and syncword**
@@ -96,4 +97,14 @@ Standard SSDV packet format specified by UKHAS (https://ukhas.org.uk/guides:ssdv
 64 alternating bits as preamble and CCSDS Sync word **0x1ACFFC1D** will be added before all of the above defined packets by the transciever. While doing uplink, one must either add these in the string being uplinked or, should set the tranciever modules to accordingly to add these to the packets.
 
 **Reed-solomon FEC**
+
 The FEC used to encode all the above mentioned packets is Reed-Solomon FEC implementation by [Philip Heron](https://github.com/fsphil) in [SSDV Project](https://github.com/fsphil/ssdv) and [Hadie Project](https://github.com/fsphil/hadie), which itself is based on portable implementation by [Phil Karn](http://www.ka9q.net/) available at http://www.ka9q.net/code/fec/ . The reciever implementers should take this into account and use the compatible decoder to avoid errors.  
+
+**References for converting Sensor data into readable format**
+1. Ambient Light Sensor (OPT3001) :- [Datasheet](https://www.ti.com/lit/ds/symlink/opt3001.pdf?ts=1593455018360&ref_url=https%253A%252F%252Fwww.google.com%252F) (Refer page 20 ) [Implementation code](https://cdn.instructables.com/ORIG/FCI/JGX9/JFBMPFVZ/FCIJGX9JFBMPFVZ.ino) (Refer lines 38-44 )
+2. Temperature Sensor (LM75) :- [Datasheet](https://datasheets.maximintegrated.com/en/ds/LM75.pdf) (Refer page 6) 
+3. Gyro Sensor (MPU-6050) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
+4. Magnetometer (HMC52883L) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
+5. Current/Power Sensor (INA219) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
+6. Battery voltage and State of charge sensor (MAX17043G+U) :- [Datasheet]() (Refer page ) [Implementation code]() (Refer lines )
+
