@@ -1,1 +1,1 @@
-temprory
+temporary
