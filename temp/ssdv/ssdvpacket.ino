@@ -7,9 +7,9 @@ byte imgPacket[768] = {55, 66, 9D, 15, FC, 73, 01, 00, 00, 0A, 0A, 02, 00, 00, 0
 
 void setup()
 {
-radio.beginFSK(435.5,1.2,0.3,14.6,0,140,64,0.5,3.3);
+radio.beginFSK(435.5,9.6,2.4,25,0,140,64,0.5,3.3);
 radio.setSyncWord(ccsds_sync_word,4);
-radio.fixedPacketLengthMode(768);
+radio.fixedPacketLengthMode(255);
 Serial.begin(9600);
 Serial.println("Sending");
   for(int i=0, i < 3, i++){
