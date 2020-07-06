@@ -15,7 +15,8 @@ Serial.println("Sending");
   for(int i=0, i < 3, i++){
     byte sendpacket[255];
     memcpy(sendpacket,&imgPacket[((i*256)+1)], 255);
-    radio.transmit(sendpacket,255)
+    radio.setencoding(0);
+    radio.transmit(sendpacket,255);
   }
 }
 
