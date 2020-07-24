@@ -69,10 +69,10 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 
 ***Sensor Data***
 
-|       | Temperature Sensor 1 | Temperature Sensor 2 | Magnetometer (x,y,z) | Gyrosensor (x,y,z) | Ambient Light| Solar Panel Power | Battery Voltage | Battery State Of Charge|
-| :---: | :------------------: | :------------------: | :------------------: | :----------------: | :----------: | :---------------: | :-------------: | :--------------------: |
-| Bytes | 2 | 2 | 6 | 6 | 12 | 10 | 2 | 2 |
-| Index | 14 | 16 | 18 | 24 | 30 | 42 | 52 | 54 |
+|       | Temperature Sensor 1 | Temperature Sensor 2 | Magnetometer (x,y,z) | Gyrosensor (x,y,z) | Ambient Light| Solar Panel Power | Battery State Of Charge|
+| :---: | :------------------: | :------------------: | :------------------: | :----------------: | :----------: | :---------------: | :--------------------: |
+| Bytes | 2 | 2 | 6 | 6 | 12 | 12 | 2 |
+| Index | 14 | 16 | 18 | 24 | 30 | 42 | 54 |
 
 ***Digipeater Uplink Packet***
 
