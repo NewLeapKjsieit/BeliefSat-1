@@ -1,0 +1,1 @@
+#define private_key 0xD4
