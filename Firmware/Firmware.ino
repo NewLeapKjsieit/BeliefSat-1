@@ -487,45 +487,45 @@ void loop()
     }
     switch (currentmode)
     {
-        case normal_mode:
+    case normal_mode:
+    {
+        if (abs(last_telemetry - millis()) >= 30000)
         {
-            if (abs(last_telemetry - millis()) >= 30000)
-            {
-                wdt_reset();
-                telemetry();
-                wdt_reset();
-                last_telemetry = millis();
-                break;
-            }
+            wdt_reset();
+            telemetry();
+            wdt_reset();
+            last_telemetry = millis();
+            break;
         }
-        case safe_mode:
+    }
+    case safe_mode:
+    {
+        if (abs(last_telemetry - millis()) >= 55000)
         {
-            if (abs(last_telemetry - millis()) >= 55000)
-            {
-                wdt_reset();
-                telemetry();
-                wdt_reset();
-                last_telemetry = millis();
-                break;
-            }
+            wdt_reset();
+            telemetry();
+            wdt_reset();
+            last_telemetry = millis();
+            break;
         }
-        case auto_ssdv_mode:
+    }
+    case auto_ssdv_mode:
+    {
+        if (abs(last_telemetry - millis()) >= 30000)
         {
-            if (abs(last_telemetry - millis()) >= 30000)
-            {
-                wdt_reset();
-                telemetry();
-                wdt_reset();
-                last_telemetry = millis();
-            }
-            if (abs(last_ssdv - millis()) >= 600000)
-            {
-                wdt_reset();
-                transmit_ssdv();
-                wdt_reset();
-                last_ssdv = millis();
-                break;
-            }
+            wdt_reset();
+            telemetry();
+            wdt_reset();
+            last_telemetry = millis();
         }
+        if (abs(last_ssdv - millis()) >= 600000)
+        {
+            wdt_reset();
+            transmit_ssdv();
+            wdt_reset();
+            last_ssdv = millis();
+            break;
+        }
+    }
     }
 }
