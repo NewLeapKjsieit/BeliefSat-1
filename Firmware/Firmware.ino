@@ -39,7 +39,7 @@
 
 // ANCHOR IMPORTS
 #include <Wire.h>
-#include <avr/wdt.h>
+#include <avr/wdt.h> // NOTE Issue in wdt.h file.
 #include <util/crc16.h>
 #include <Adafruit_INA219.h> // NOTE Added Adafruit_INA219 library
 #include <EEPROM.h>
@@ -239,7 +239,7 @@ void telemetry()
     encode_rs_8(&telem_cmd_packet[0], &telem_cmd_packet[rs_telem_pos], (223 - 58));
     int output_power;
     currentmode == safe_mode ? output_power = 13 : output_power = 16;
-    radio.beginFSK(radioFreq, 1.2, 0.3, 14.6, output_power, 140, 64, 0.5, 0);
+    radio.beginFSK(radioFreq, 1.2, 0.3, 14.6, output_power, 140, 64, 0.5, 0); // FIXME The unexpected 140.
     radio.transmit(telem_cmd_packet, 90);
     delay(100);
     radio.startReceive();
