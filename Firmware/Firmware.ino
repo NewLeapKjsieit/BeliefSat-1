@@ -17,7 +17,7 @@
 #define normal_mode 0x11
 #define safe_mode 0x05
 #define auto_ssdv_mode 0xAA
-#define silent_mode 0XFF
+#define Silent_mode 0XFF
 #define image_quality 5 // NOTE try changing this from 0-7 and see which quality suits the speed;
 #define packet_type_telem_pos 0
 #define callsign_telem_pos 1
@@ -187,11 +187,11 @@ void get_battery_soc()
     telem_cmd_packet[soc_telem_pos + 1] = Wire.read();
     wdt_reset();
     battery_soc = telem_cmd_packet[soc_telem_pos] + (float)(telem_cmd_packet[soc_telem_pos + 1] / 256.0);
-    if (battery_soc <= 50.0 && (currentmode != safe_mode || currentmode != silent_mode))
+    if (battery_soc <= 50.0 && (currentmode != safe_mode || currentmode != Silent_mode))
     {
         currentmode = safe_mode; // auto switch to safe mode when battery goes less than 50%
     }
-    if (currentmode == safe_mode && battery_soc >= 85.0 && currentmode != silent_mode)
+    if (currentmode == safe_mode && battery_soc >= 85.0 && currentmode != Silent_mode)
     {
         currentmode = normal_mode; //auto switch to normal mode when battery goes more than 70%
     }
@@ -417,10 +417,10 @@ void process_cmd()
         }
         if (major_part[13] == 0x55 && major_part[14] == 0xAA) //shift to silent mode
         {
-            currentmode = silent_mode;
+            currentmode = Silent_mode;
             wdt_reset();
             flag.silent_mode = true;
-            EEPROM.put(flag);
+            EEPROM.put(0x00, flag);
             return;
         }
         if (major_part[13] == 0xAA && major_part[14] == 0x55) //turn on transmitter
@@ -438,7 +438,7 @@ void process_cmd()
 // ANCHOR VOID SETUP();
 void setup()
 {
-    EEPROM.get(flag, 0x00); // FIXME Error in EEPROM.get() arguments;
+    // EEPROM.get(flag, 0x00); // FIXME Error in EEPROM.get() arguments;
 
     SPI.begin();
 
@@ -470,7 +470,7 @@ void setup()
     radio.setDio1Action(receive_interrupt); // NOTE Fixed function call
     if (flag.silent_mode)
     {
-        currentmode = silent_mode;
+        currentmode = Silent_mode;
     }
 }
 
