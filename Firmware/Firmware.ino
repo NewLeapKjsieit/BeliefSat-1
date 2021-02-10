@@ -5,7 +5,7 @@
 #define i2c_addr_magnetometer 0x1E
 #define i2c_addr_gyro 0x68 // NOTE Address of MPU6050 is 0x68;
 #define i2c_addr_power 0x40
-#define i2c_addr_fuel_guage 0x36
+#define i2c_addr_fuel_guage ff0x36
 #define north_enable_pin 18
 #define LORA_BUSY 4
 #define LORA_DIO1 10
