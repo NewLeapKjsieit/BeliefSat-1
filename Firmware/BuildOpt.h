@@ -2,9 +2,9 @@
 #define _RADIOLIB_BUILD_OPTIONS_H
 
 #if ARDUINO >= 100
-  #include "Arduino.h"
+#include "Arduino.h"
 #else
-  #error "Unsupported Arduino version (< 1.0.0)"
+#error "Unsupported Arduino version (< 1.0.0)"
 #endif
 
 /*
@@ -35,270 +35,270 @@
 //#define RADIOLIB_CUSTOM_PLATFORM
 
 #if defined(RADIOLIB_CUSTOM_PLATFORM)
-  // name for your platform
-  #define RADIOLIB_PLATFORM                           "Custom"
+// name for your platform
+#define RADIOLIB_PLATFORM "Custom"
 
-  // the following parameters must always be defined
-  #define RADIOLIB_PIN_TYPE                           uint8_t
-  #define RADIOLIB_PIN_MODE                           uint8_t
-  #define RADIOLIB_PIN_STATUS                         uint8_t
-  #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-  #define RADIOLIB_NC                                 (0xFF)
-  #define RADIOLIB_DEFAULT_SPI                        SPI
-  #define RADIOLIB_PROGMEM                            PROGMEM
-  #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+// the following parameters must always be defined
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  // the following must be defined if the Arduino core does not support SoftwareSerial library
-  //#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  //#define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+// the following must be defined if the Arduino core does not support SoftwareSerial library
+//#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+//#define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
-  // the following must be defined if the Arduino core does not support tone function
-  //#define RADIOLIB_TONE_UNSUPPORTED
+// the following must be defined if the Arduino core does not support tone function
+//#define RADIOLIB_TONE_UNSUPPORTED
 
-  // some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
-  // the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
-  // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
-  //       while keeping SX1231 (because RF69 is the base class for SX1231). The dependency is always uni-directional,
-  //       so excluding SX1231 and keeping RF69 is valid.
-  //#define RADIOLIB_EXCLUDE_CC1101
-  //#define RADIOLIB_EXCLUDE_ESP8266
-  //#define RADIOLIB_EXCLUDE_HC05
-  //#define RADIOLIB_EXCLUDE_JDY08
-  //#define RADIOLIB_EXCLUDE_NRF24
-  //#define RADIOLIB_EXCLUDE_RF69
-  //#define RADIOLIB_EXCLUDE_SX1231     // dependent on RADIOLIB_EXCLUDE_RF69
-  //#define RADIOLIB_EXCLUDE_SI443X
-  //#define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
-  //#define RADIOLIB_EXCLUDE_SX127X
-  //#define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
-  //#define RADIOLIB_EXCLUDE_SX126X
-  //#define RADIOLIB_EXCLUDE_SX128X
-  //#define RADIOLIB_EXCLUDE_XBEE
-  //#define RADIOLIB_EXCLUDE_AFSK
-  //#define RADIOLIB_EXCLUDE_AX25
-  //#define RADIOLIB_EXCLUDE_HELLSCHREIBER
-  //#define RADIOLIB_EXCLUDE_HTTP
-  //#define RADIOLIB_EXCLUDE_MORSE
-  //#define RADIOLIB_EXCLUDE_MQTT
-  //#define RADIOLIB_EXCLUDE_RTTY
-  //#define RADIOLIB_EXCLUDE_SSTV
+// some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
+// the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
+// NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
+//       while keeping SX1231 (because RF69 is the base class for SX1231). The dependency is always uni-directional,
+//       so excluding SX1231 and keeping RF69 is valid.
+//#define RADIOLIB_EXCLUDE_CC1101
+//#define RADIOLIB_EXCLUDE_ESP8266
+//#define RADIOLIB_EXCLUDE_HC05
+//#define RADIOLIB_EXCLUDE_JDY08
+//#define RADIOLIB_EXCLUDE_NRF24
+//#define RADIOLIB_EXCLUDE_RF69
+//#define RADIOLIB_EXCLUDE_SX1231     // dependent on RADIOLIB_EXCLUDE_RF69
+//#define RADIOLIB_EXCLUDE_SI443X
+//#define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
+//#define RADIOLIB_EXCLUDE_SX127X
+//#define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
+//#define RADIOLIB_EXCLUDE_SX126X
+//#define RADIOLIB_EXCLUDE_SX128X
+//#define RADIOLIB_EXCLUDE_XBEE
+//#define RADIOLIB_EXCLUDE_AFSK
+//#define RADIOLIB_EXCLUDE_AX25
+//#define RADIOLIB_EXCLUDE_HELLSCHREIBER
+//#define RADIOLIB_EXCLUDE_HTTP
+//#define RADIOLIB_EXCLUDE_MORSE
+//#define RADIOLIB_EXCLUDE_MQTT
+//#define RADIOLIB_EXCLUDE_RTTY
+//#define RADIOLIB_EXCLUDE_SSTV
 
 #else
-  #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
-    // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
-    #define RADIOLIB_PLATFORM                           "Arduino AVR"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
+// Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
+#define RADIOLIB_PLATFORM "Arduino AVR"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  #elif defined(ESP8266)
-    // ESP8266 boards
-    #define RADIOLIB_PLATFORM                           "ESP8266"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#elif defined(ESP8266)
+// ESP8266 boards
+#define RADIOLIB_PLATFORM "ESP8266"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-    // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
-    #define RADIOLIB_EXCLUDE_ESP8266
+// RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
+#define RADIOLIB_EXCLUDE_ESP8266
 
-  #elif defined(ESP32)
-    // ESP32 boards
-    #define RADIOLIB_PLATFORM                           "ESP32"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(ESP32)
+// ESP32 boards
+#define RADIOLIB_PLATFORM "ESP32"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-    // ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
-    #define RADIOLIB_TONE_UNSUPPORTED
-    #define RADIOLIB_TONE_ESP32_CHANNEL                 (1)
+// ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
+#define RADIOLIB_TONE_UNSUPPORTED
+#define RADIOLIB_TONE_ESP32_CHANNEL (1)
 
-  #elif defined(ARDUINO_ARCH_STM32)
-    // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
-    #define RADIOLIB_PLATFORM                           "Arduino STM32 (official)"
-    #define RADIOLIB_PIN_TYPE                           uint32_t
-    #define RADIOLIB_PIN_MODE                           uint32_t
-    #define RADIOLIB_PIN_STATUS                         uint32_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(digitalPinToPinName(p))
-    #define RADIOLIB_NC                                 (0xFFFFFFFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(ARDUINO_ARCH_STM32)
+// official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
+#define RADIOLIB_PLATFORM "Arduino STM32 (official)"
+#define RADIOLIB_PIN_TYPE uint32_t
+#define RADIOLIB_PIN_MODE uint32_t
+#define RADIOLIB_PIN_STATUS uint32_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(digitalPinToPinName(p))
+#define RADIOLIB_NC (0xFFFFFFFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-  #elif defined(SAMD_SERIES)
-    // Arduino SAMD (Zero, MKR, etc.) and Adafruit SAMD boards (M0 and M4)
-    #define RADIOLIB_PLATFORM                           "Arduino/Adafruit SAMD"
-    #define RADIOLIB_PIN_TYPE                           uint32_t
-    #define RADIOLIB_PIN_MODE                           uint32_t
-    #define RADIOLIB_PIN_STATUS                         uint32_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFFFFFFFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(SAMD_SERIES)
+// Arduino SAMD (Zero, MKR, etc.) and Adafruit SAMD boards (M0 and M4)
+#define RADIOLIB_PLATFORM "Arduino/Adafruit SAMD"
+#define RADIOLIB_PIN_TYPE uint32_t
+#define RADIOLIB_PIN_MODE uint32_t
+#define RADIOLIB_PIN_STATUS uint32_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFFFFFFFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-  #elif defined(__SAM3X8E__)
-    // Arduino Due
-    #define RADIOLIB_PLATFORM                           "Arduino Due"
-    #define RADIOLIB_PIN_TYPE                           uint32_t
-    #define RADIOLIB_PIN_MODE                           uint32_t
-    #define RADIOLIB_PIN_STATUS                         uint32_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFFFFFFFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
-    #define RADIOLIB_TONE_UNSUPPORTED
+#elif defined(__SAM3X8E__)
+// Arduino Due
+#define RADIOLIB_PLATFORM "Arduino Due"
+#define RADIOLIB_PIN_TYPE uint32_t
+#define RADIOLIB_PIN_MODE uint32_t
+#define RADIOLIB_PIN_STATUS uint32_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFFFFFFFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
+#define RADIOLIB_TONE_UNSUPPORTED
 
-  #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
-    // Adafruit nRF52 boards
-    #define RADIOLIB_PLATFORM                           "Adafruit nRF52"
-    #define RADIOLIB_PIN_TYPE                           uint32_t
-    #define RADIOLIB_PIN_MODE                           uint32_t
-    #define RADIOLIB_PIN_STATUS                         uint32_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFFFFFFFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
+// Adafruit nRF52 boards
+#define RADIOLIB_PLATFORM "Adafruit nRF52"
+#define RADIOLIB_PIN_TYPE uint32_t
+#define RADIOLIB_PIN_MODE uint32_t
+#define RADIOLIB_PIN_STATUS uint32_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFFFFFFFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  #elif defined(ARDUINO_ARC32_TOOLS)
-    // Intel Curie
-    #define RADIOLIB_PLATFORM                           "Intel Curie"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#elif defined(ARDUINO_ARC32_TOOLS)
+// Intel Curie
+#define RADIOLIB_PLATFORM "Intel Curie"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
-    // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
-    #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           PinMode
-    #define RADIOLIB_PIN_STATUS                         PinStatus
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
+// Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
+#define RADIOLIB_PLATFORM "Arduino megaAVR"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE PinMode
+#define RADIOLIB_PIN_STATUS PinStatus
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  #elif defined(AM_PART_APOLLO3)
-    // Sparkfun Artemis boards
-    #define RADIOLIB_PLATFORM                           "Sparkfun Artemis"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(AM_PART_APOLLO3)
+// Sparkfun Artemis boards
+#define RADIOLIB_PLATFORM "Sparkfun Artemis"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-  #elif defined(ARDUINO_ARDUINO_NANO33BLE)
-    // Arduino Nano 33 BLE
-    #define RADIOLIB_PLATFORM                           "Arduino Nano 33 BLE"
-    #define RADIOLIB_PIN_TYPE                           pin_size_t
-    #define RADIOLIB_PIN_MODE                           PinMode
-    #define RADIOLIB_PIN_STATUS                         PinStatus
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(ARDUINO_ARDUINO_NANO33BLE)
+// Arduino Nano 33 BLE
+#define RADIOLIB_PLATFORM "Arduino Nano 33 BLE"
+#define RADIOLIB_PIN_TYPE pin_size_t
+#define RADIOLIB_PIN_MODE PinMode
+#define RADIOLIB_PIN_STATUS PinStatus
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-    // Nano 33 BLE uses mbed libraries, which already contain ESP8266 driver
-    #define RADIOLIB_EXCLUDE_ESP8266
+// Nano 33 BLE uses mbed libraries, which already contain ESP8266 driver
+#define RADIOLIB_EXCLUDE_ESP8266
 
-  #elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4)
-    // Arduino Portenta H7
-    #define RADIOLIB_PLATFORM                           "Portenta H7"
-    #define RADIOLIB_PIN_TYPE                           pin_size_t
-    #define RADIOLIB_PIN_MODE                           PinMode
-    #define RADIOLIB_PIN_STATUS                         PinStatus
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4)
+// Arduino Portenta H7
+#define RADIOLIB_PLATFORM "Portenta H7"
+#define RADIOLIB_PIN_TYPE pin_size_t
+#define RADIOLIB_PIN_MODE PinMode
+#define RADIOLIB_PIN_STATUS PinStatus
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-    // Arduino Portenta H7 uses mbed libraries, which already contain ESP8266 driver
-    #define RADIOLIB_EXCLUDE_ESP8266
+// Arduino Portenta H7 uses mbed libraries, which already contain ESP8266 driver
+#define RADIOLIB_EXCLUDE_ESP8266
 
-  #elif defined(__STM32F4__) || defined(__STM32F1__)
-    // Arduino STM32 core by Roger Clark (https://github.com/rogerclarkmelbourne/Arduino_STM32)
-    #define RADIOLIB_PLATFORM                           "STM32duino (unofficial)"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           WiringPinMode
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   ExtIntTriggerMode
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
-    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+#elif defined(__STM32F4__) || defined(__STM32F1__)
+// Arduino STM32 core by Roger Clark (https://github.com/rogerclarkmelbourne/Arduino_STM32)
+#define RADIOLIB_PLATFORM "STM32duino (unofficial)"
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE WiringPinMode
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS ExtIntTriggerMode
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
+#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+#define RADIOLIB_HARDWARE_SERIAL_PORT Serial1
 
-  #else
-    // other platforms not covered by the above list - this may or may not work
-    #define RADIOLIB_PLATFORM                           "Unknown"
-    #define RADIOLIB_UNKNOWN_PLATFORM
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
-    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
-    #define RADIOLIB_NC                                 (0xFF)
-    #define RADIOLIB_DEFAULT_SPI                        SPI
-    #define RADIOLIB_PROGMEM                            PROGMEM
-    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+#else
+// other platforms not covered by the above list - this may or may not work
+#define RADIOLIB_PLATFORM "Unknown"
+#define RADIOLIB_UNKNOWN_PLATFORM
+#define RADIOLIB_PIN_TYPE uint8_t
+#define RADIOLIB_PIN_MODE uint8_t
+#define RADIOLIB_PIN_STATUS uint8_t
+#define RADIOLIB_INTERRUPT_STATUS RADIOLIB_PIN_STATUS
+#define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p) digitalPinToInterrupt(p)
+#define RADIOLIB_NC (0xFF)
+#define RADIOLIB_DEFAULT_SPI SPI
+#define RADIOLIB_PROGMEM PROGMEM
+#define RADIOLIB_PROGMEM_READ_BYTE(addr) pgm_read_byte(addr)
 
-  #endif
+#endif
 #endif
 
 /*
@@ -313,22 +313,42 @@
 //#define RADIOLIB_VERBOSE
 
 // set which Serial port should be used for debug output
-#define RADIOLIB_DEBUG_PORT   Serial
+#define RADIOLIB_DEBUG_PORT Serial
 
 #if defined(RADIOLIB_DEBUG)
-  #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
-  #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
+#define RADIOLIB_DEBUG_PRINT(...)           \
+  {                                         \
+    RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); \
+  }
+#define RADIOLIB_DEBUG_PRINTLN(...)           \
+  {                                           \
+    RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); \
+  }
 #else
-  #define RADIOLIB_DEBUG_PRINT(...) {}
-  #define RADIOLIB_DEBUG_PRINTLN(...) {}
+#define RADIOLIB_DEBUG_PRINT(...) \
+  {                               \
+  }
+#define RADIOLIB_DEBUG_PRINTLN(...) \
+  {                                 \
+  }
 #endif
 
 #if defined(RADIOLIB_VERBOSE)
-  #define RADIOLIB_VERBOSE_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
-  #define RADIOLIB_VERBOSE_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
+#define RADIOLIB_VERBOSE_PRINT(...)         \
+  {                                         \
+    RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); \
+  }
+#define RADIOLIB_VERBOSE_PRINTLN(...)         \
+  {                                           \
+    RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); \
+  }
 #else
-  #define RADIOLIB_VERBOSE_PRINT(...) {}
-  #define RADIOLIB_VERBOSE_PRINTLN(...) {}
+#define RADIOLIB_VERBOSE_PRINT(...) \
+  {                                 \
+  }
+#define RADIOLIB_VERBOSE_PRINTLN(...) \
+  {                                   \
+  }
 #endif
 
 /*
@@ -352,25 +372,36 @@
 
 // set the size of static arrays to use
 #if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
-#define RADIOLIB_STATIC_ARRAY_SIZE   256
+#define RADIOLIB_STATIC_ARRAY_SIZE 256
 #endif
 
 /*!
   \brief A simple assert macro, will return on error.
 */
-#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != ERR_NONE) { return(STATEVAR); } }
+#define RADIOLIB_ASSERT(STATEVAR) \
+  {                               \
+    if ((STATEVAR) != ERR_NONE)   \
+    {                             \
+      return (STATEVAR);          \
+    }                             \
+  }
 
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges.
 */
-#define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
-
+#define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) \
+  {                                              \
+    if (!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) \
+    {                                            \
+      return (ERR);                              \
+    }                                            \
+  }
 
 // version definitions
-#define RADIOLIB_VERSION_MAJOR  (0x04)
-#define RADIOLIB_VERSION_MINOR  (0x00)
-#define RADIOLIB_VERSION_PATCH  (0x06)
-#define RADIOLIB_VERSION_EXTRA  (0x00)
+#define RADIOLIB_VERSION_MAJOR (0x04)
+#define RADIOLIB_VERSION_MINOR (0x00)
+#define RADIOLIB_VERSION_PATCH (0x06)
+#define RADIOLIB_VERSION_EXTRA (0x00)
 
 #define RADIOLIB_VERSION ((RADIOLIB_VERSION_MAJOR << 24) | (RADIOLIB_VERSION_MINOR << 16) | (RADIOLIB_VERSION_PATCH << 8) | (RADIOLIB_VERSION_EXTRA))
 

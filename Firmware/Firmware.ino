@@ -1,4 +1,6 @@
 // ANCHOR MACROS
+
+// ANCHOR Sensor Init
 #define i2c_addr_top_temp 0x4A
 #define i2c_addr_bot_temp 0x4B
 #define i2c_addr_ambient_light 0x44
@@ -7,17 +9,25 @@
 #define i2c_addr_power 0x40
 #define i2c_addr_fuel_guage 0x36
 #define north_enable_pin 18
+
+// ANCHOR LORA
 #define LORA_BUSY 4
 #define LORA_DIO1 10
 #define LORA_NRST 0
 #define LORA_NSS 3
 #define LORA_DIO3 1
+
+// ANCHOR Camera Macros
 #define Camera_enable_pin 12
 #define camera_cs_pin 13
+
+// ANCHOR Operating Modes
 #define normal_mode 0x11
 #define safe_mode 0x05
 #define auto_ssdv_mode 0xAA
 #define Silent_mode 0XFF
+
+// ANCHOR Telemetry
 #define image_quality 5 // NOTE try changing this from 0-7 and see which quality suits the speed;
 #define packet_type_telem_pos 0
 #define callsign_telem_pos 1
@@ -37,6 +47,11 @@
 #define radioFreq 435.4
 #define telemetry_packet_indicator 0xAB
 
+// ANCHOR Persistent SRAM Macros
+#define EEPROM_DATA_ADDR 0x00
+#define FIRST_START_DELAY 100 // NOTE In milliseconds
+#define PERSISTANCE_CHECKER_VALUE 0xAF
+
 // ANCHOR IMPORTS
 #include <Wire.h>
 #include <avr/wdt.h> // NOTE Issue in wdt.h file.
@@ -50,6 +65,9 @@
 #include "key.h"
 
 // ANCHOR VARIABLES
+uint32_t soft_reset_cnt __attribute__((section(".noinit")));
+uint8_t sram_persistance_checker_variable __attribute__((section(".noinit")));
+
 uint8_t telem_cmd_packet[90], currentmode = safe_mode; //start with safe modes
 char callsign_bytes[6] = {'V', 'U', '3', 'O', 'I', 'R'};
 uint8_t ccsds_sync_word[4] = {0x1A, 0xCF, 0xFC, 0x1D}, hi_chars[3] = {'H', 'i', '!'}, image_id = 0;
@@ -65,7 +83,8 @@ struct EEprom
 {
     bool deployed;
     uint16_t resets;
-    bool silent_mode; // FIXME This is a previosly defined macro on line 19;
+    uint32_t hard_resets;
+    bool silent_mode;
 } flag;
 
 // ANCHOR FUNCTIONS;
@@ -438,13 +457,27 @@ void process_cmd()
 // ANCHOR VOID SETUP();
 void setup()
 {
-    // EEPROM.get(flag, 0x00); // FIXME Error in EEPROM.get() arguments;
+    // EEPROM.get(flag, 0x00);
 
     SPI.begin();
 
     //Set EEPROM Flags
     EEPROM.get(0x00, flag);
-    flag.resets += 1;
+    if (flag.resets == 0x00)
+    {
+        delay(FIRST_START_DELAY);
+    }
+    flag.resets++;
+    if (sram_persistance_checker_variable != PERSISTANCE_CHECKER_VALUE) // NOTE Check if there was a hard reset.
+    {
+        flag.hard_resets++;
+        sram_persistance_checker_variable = PERSISTANCE_CHECKER_VALUE;
+        soft_reset_cnt = 0;
+    }
+    else
+    {
+        soft_reset_cnt++;
+    }
     EEPROM.put(0x00, flag);
     Wire.begin();
 
