@@ -67,7 +67,7 @@
 // ANCHOR VARIABLES
 uint32_t soft_reset_cnt __attribute__((section(".noinit")));
 uint8_t sram_persistance_checker_variable __attribute__((section(".noinit")));
-
+/////////////////////
 uint8_t telem_cmd_packet[90], currentmode = safe_mode; //start with safe modes
 char callsign_bytes[6] = {'V', 'U', '3', 'O', 'I', 'R'};
 uint8_t ccsds_sync_word[4] = {0x1A, 0xCF, 0xFC, 0x1D}, hi_chars[3] = {'H', 'i', '!'}, image_id = 0;

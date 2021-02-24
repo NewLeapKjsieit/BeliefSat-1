@@ -35,3 +35,5 @@
 
 Firmware/.vscode
 Firmware/.pio
+Sensors_Final/mpu6050/.vscode/arduino.json
+Sensors_Final/mpu6050/.vscode/c_cpp_properties.json
