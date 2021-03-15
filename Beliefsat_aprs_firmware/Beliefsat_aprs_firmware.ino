@@ -1,3 +1,5 @@
+#include <Adafruit_INA219.h>
+#include <Adafruit_MPU6050.h>
 #include <DallasTemperature.h>
 #include <EEPROM.h>
 #include <LibAPRS.h>
@@ -65,6 +67,10 @@ boolean transmission_is_on;
 uint16_t total_resets;
 uint16_t wd_induced_resets;
 long last_telemetry_time;
+
+// initialize sensor objects
+Adafruit_MPU6050 mpu;
+Adafruit_INA219 ina219;
 
 String num_to_string(uint8_t X)
 {
@@ -159,7 +165,19 @@ void setup() {
   Wire.begin();
   ////////////////////////////////////
   // Sensor initializations
-  wdt_reset();  
+  wdt_reset();
+
+  //MPU6050
+  mpu.begin();
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+
+  //INA219
+  ina219.begin();
+
+  //Dallas temperature sensor
+  
   ////////////////////////////////////
   last_telemetry_time = millis();
 }
@@ -280,6 +298,16 @@ void get_gyro()
 {
   //code to get gyro sensor values
   wdt_reset();
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  float w_x = (a.acceleration.x) * (g.gyro.x-0.02148);
+  float w_y = (a.acceleration.y) * (g.gyro.y+0.03639);
+  float w_z = (a.acceleration.z) * (g.gyro.z-0.00652);
+
+  gyro_sensor_1 = float_to_string(w_x);
+  gyro_sensor_2 = float_to_string(w_y);
+  gyro_sensor_3 = float_to_string(w_z);
 }
 
 void get_temperature()
@@ -291,7 +319,15 @@ void get_temperature()
 void get_current()
 {
   //code to get current
-  wdt_reset();  
+  wdt_reset();
+  float busvoltage = 0;
+  float current_mA = 0;
+
+  busvoltage = ina219.getBusVoltage_V();
+  current_mA = ina219.getCurrent_mA();
+
+  current = float_to_string(current_mA);
+  battery_voltage = float_to_string(busvoltage);
 }
 
 void get_sensor_values()
