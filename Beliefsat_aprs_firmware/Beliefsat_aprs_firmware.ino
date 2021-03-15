@@ -1,39 +1,97 @@
+#include <DallasTemperature.h>
+#include <EEPROM.h>
 #include <LibAPRS.h>
+#include <OneWire.h>
 #include <SoftwareSerial.h>
-
-#define TEPERATURE_SESOR_PIN 2
-#define SOFTWARE_SERIAL_RX_PIN 8
-#define SOFTWARE_SERIAL_TX_PIN 9
-#define CAMERA_NSS_PIN 10
-#define CAMERA_ENABLE_PIN A2
-#define ANTENNA_DEPLOYMENT_PIN A3
+#include <Wire.h>
+#include <avr/wdt.h>
 
 #define ADC_REFERENCE REF_3V3
-#define OPEN_SQUELCH false
-#define SAT_CALLSIGN "VU2CWN"
-#define TO_CALL "CQ"
-#define SAT_SSID 11
-#define DIGI_SSID 6
-#define GS_SSID 1
-
+#define OPEN_SQUELCH true
 #define debug
-#define TELEMETRY_INTERVAL 30000 //miliseconds
+
+#define SATCALL_SIGN "VU2CWN"
+#define GSCALL_SIGN "VU3OIR"
+#define SATTELEM_SSID 11
+#define SATDIGI_SSID 6
+#define GS_SSID 1
+#define FIRST_BOOT_DELAY 1800     // seconds
+#define RESISTOR_BURN_DELAY 10000 // milliseconds
+#define TELEMETRY_INTERVAL 60000  // milliseconds
+#define APRS_TOCALL "CQ"
+
+#define ANTENNA_DEPLOYMENT_PIN (8)
+#define UHF_POWER_DOWN_PIN (9)
+#define UHF_RX (12)
+#define UHF_TX (13)
+#define VHF_RX (10)
+#define VHF_TX (11)
+#define TEMPERATURE_SENSOR_PIN 2
+
+String temp_sensor_1 = "";
+String temp_sensor_2 = "";
+String gyro_sensor_1 = "";
+String gyro_sensor_2 = "";
+String gyro_sensor_3 = "";
+String current = "";
+String battery_voltage = "";
+
+#define VHF_SETUP_STRING "AT+DMOSETGROUP=0,145.8250,145.8250,0000,0,0000\r\n"
+#define UHF_SETUP_STRING "AT+DMOSETGROUP=0,435.6000,435.6000,0000,1,0001\r\n"
+#define TURN_OFF_VOICE_REPEATER_INPUT digitalWrite(UHF_POWER_DOWN_PIN, LOW)
+#define TURN_ON_VOICE_REPEATER_INPUT                                           \
+  do {                                                                         \
+    digitalWrite(UHF_POWER_DOWN_PIN, HIGH);                                    \
+    uhf_port.write(F(UHF_SETUP_STRING));                                       \
+  } while (0)
+
+#define TOTAL_RESETS_EEPROM_ADDR 0x00
+#define WD_INDUCED_RESETS_EEPROM_ADDR 0x02
+#define TX_STATUS 0x04
 
 #define COMMAND_INDICATOR '!'
-#define DIGI_TURN_ON_TYPE '@'
-#define DIGI_TURN_OFF_TYPE '#'
-#define TX_TURN_ON_TYPE '$'
-#define TX_TURN_OFF_TYPE '%'
-#define SSDV_CAPTURE_TYPE '^'
 
-bool digipeater_is_on = false;
-bool tx_is_on = true;
-bool is_sending_ssdv = false;
+OneWire oneWire(TEMPERATURE_SENSOR_PIN);
+DallasTemperature sensors(&oneWire);
+SoftwareSerial vhf_port(VHF_RX, VHF_TX);
+SoftwareSerial uhf_port(UHF_RX, UHF_TX);
+
 boolean gotPacket = false;
 AX25Msg incomingPacket;
 uint8_t *packetData;
-long last_telemetry;
-SoftwareSerial vhf_port(SOFTWARE_SERIAL_RX_PIN, SOFTWARE_SERIAL_TX_PIN);
+boolean digipeater_is_on = false;
+boolean voice_repeater_is_on = false;
+boolean transmission_is_on;
+uint16_t total_resets;
+uint16_t wd_induced_resets;
+long last_telemetry_time;
+
+String num_to_string(uint8_t X)
+{
+  String str = "";
+  if(X < 10)
+    {
+      String str = "00" + String(X, DEC);
+    }
+    if(X < 100 && X > 9)
+    {
+      String str = "0" + String(X, DEC);
+    }
+    if(X >= 100)
+    {
+      String str = String(X, DEC);
+    }
+   return str;
+}
+
+String float_to_string(float value){
+    long X,temp = 0;
+    X = (long)(value * 100);
+    temp = X % 100;
+    X = X - temp;
+    String str = num_to_string(X);
+    return str;
+}
 
 void aprs_msg_callback(struct AX25Msg *msg) {
   if (!gotPacket) {
@@ -49,22 +107,61 @@ void aprs_msg_callback(struct AX25Msg *msg) {
   }
 }
 
+ISR(WDT_vect) {
+  wd_induced_resets++;
+  EEPROM.write(WD_INDUCED_RESETS_EEPROM_ADDR, wd_induced_resets);
+}
+
 void setup() {
-  Serial.begin(115200);
-  vhf_port.begin(9600);
-  vhf_port.write(F("AT+DMOSETGROUP=0,145.8250,145.8250,0000,0,0000\r\n"));
 #ifdef debug
-  Serial.println(vhf_port.readString());
+  Serial.begin(9600);
 #endif
+  watchdogSetup();
+  EEPROM.get(TOTAL_RESETS_EEPROM_ADDR, total_resets);
+
+  if (total_resets < 1) {
+#ifdef debug
+    Serial.println(F("First_boot_delay started"));
+#endif
+    for (int i = 0; i < FIRST_BOOT_DELAY; i++) {
+      delay(1000);
+      wdt_reset();
+    }
+    pinMode(ANTENNA_DEPLOYMENT_PIN, OUTPUT);
+    digitalWrite(ANTENNA_DEPLOYMENT_PIN, HIGH);
+    delay(RESISTOR_BURN_DELAY / 2);
+    wdt_reset();
+    delay(RESISTOR_BURN_DELAY / 2);
+    digitalWrite(ANTENNA_DEPLOYMENT_PIN, LOW);
+  }
+
+  total_resets++;
+  EEPROM.put(TOTAL_RESETS_EEPROM_ADDR, total_resets);
+  EEPROM.get(WD_INDUCED_RESETS_EEPROM_ADDR, wd_induced_resets);
+  EEPROM.get(TX_STATUS, transmission_is_on);
+
+  pinMode(UHF_POWER_DOWN_PIN, OUTPUT);
+
+  vhf_port.begin(9600);
+  uhf_port.begin(9600);
+
+  vhf_port.write(F(VHF_SETUP_STRING));
+  wdt_reset();
   APRS_init(ADC_REFERENCE, OPEN_SQUELCH);
-  APRS_setCallsign(SAT_CALLSIGN, SAT_SSID);
-  APRS_setDestination(TO_CALL, 0);
-  APRS_setPreamble(500);
-  APRS_setTail(100);
+  APRS_setCallsign(SATCALL_SIGN, SATTELEM_SSID);
+  APRS_setDestination(APRS_TOCALL, 0);
+
 #ifdef debug
   APRS_printSettings();
+  Serial.print(F("Free RAM:     "));
+  Serial.println(freeMemory());
 #endif
-  last_telemetry=millis();
+  Wire.begin();
+  ////////////////////////////////////
+  // Sensor initializations
+  wdt_reset();  
+  ////////////////////////////////////
+  last_telemetry_time = millis();
 }
 
 void processPacket() {
@@ -72,62 +169,88 @@ void processPacket() {
     gotPacket = false;
 
 #ifdef debug
+    Serial.print(F("Received APRS packet. SRC: "));
+    Serial.print(incomingPacket.src.call);
+    Serial.print(F("-"));
+    Serial.print(incomingPacket.src.ssid);
+    Serial.print(F(". DST: "));
+    Serial.print(incomingPacket.dst.call);
+    Serial.print(F("-"));
+    Serial.print(incomingPacket.dst.ssid);
+    Serial.print(F(". Data: "));
+
     for (int i = 0; i < incomingPacket.len; i++) {
       Serial.write(incomingPacket.info[i]);
     }
     Serial.println("");
 #endif
-    if (incomingPacket.src.call == SAT_CALLSIGN &&
+    if (incomingPacket.src.call == SATCALL_SIGN &&
         incomingPacket.src.ssid == GS_SSID &&
-        incomingPacket.dst.call == SAT_CALLSIGN &&
-        incomingPacket.dst.ssid == SAT_SSID &&
-        packetData[0] == COMMAND_INDICATOR) {
-      switch (packetData[1]) {
-        case DIGI_TURN_ON_TYPE:
-          {
-            digipeater_is_on = true;
-            break;
-          }
-        case DIGI_TURN_OFF_TYPE:
-          {
-            digipeater_is_on = false;
-            break;
-          }
-        case TX_TURN_ON_TYPE:
-          {
-            tx_is_on = true;
-            break;
-          }
-        case TX_TURN_OFF_TYPE:
-          {
-            tx_is_on = false;
-            break;
-          }
-        case SSDV_CAPTURE_TYPE:
-          {
-            if (!is_sending_ssdv && tx_is_on) //if we are laready sensing ssdv we shouldn't capture new pic in middle
-            {
-              digitalWrite(CAMERA_ENABLE_PIN, HIGH); //turn on camera
-              delay(1000);
-              is_sending_ssdv = true;
-              break;
-            }
-          }
+        incomingPacket.info[0] == COMMAND_INDICATOR &&
+        incomingPacket.dst.call == SATCALL_SIGN &&
+        incomingPacket.dst.ssid == SATTELEM_SSID) {
+      switch (incomingPacket.info[1]) {
+      case '@': {
+        // turn on digipeater
+        TURN_OFF_VOICE_REPEATER_INPUT;
+        digipeater_is_on = true;
+        break;
+      }
+      case '#': {
+        // turn off digipeater
+        digipeater_is_on = false;
+        break;
+      }
+      case '$': {
+        // turn on voice repeater
+        if (transmission_is_on) {
+          digipeater_is_on = false;
+          voice_repeater_is_on = true;
+          TURN_ON_VOICE_REPEATER_INPUT;
+        }
+        break;
+      }
+      case '%': {
+        // turn off voice repeater
+        TURN_OFF_VOICE_REPEATER_INPUT;
+        voice_repeater_is_on = false;
+        break;
+      }
+      case '^': {
+        // turn of the trasmissions
+        TURN_OFF_VOICE_REPEATER_INPUT;
+        digipeater_is_on = false;
+        transmission_is_on = false;
+        EEPROM.put(TX_STATUS, transmission_is_on);
+        break;
+      }
+      case '&': {
+        // turn on transmissions
+        transmission_is_on = true;
+        EEPROM.put(TX_STATUS, transmission_is_on);
+        break;
+      }
+      case '*': {
+        // reset the satellite by trigering the watch dog
+        while (1)
+          ;
+        break;
+      }
       }
     } else {
-      if (digipeater_is_on && tx_is_on) {
-        bool do_repeat = false;
+      if (digipeater_is_on && transmission_is_on) {
+        boolean do_repeat = false;
         for (int i = 0; i < incomingPacket.rpt_count; i++) {
           if (!strcmp(incomingPacket.rpt_list[i].call, "ARISS") ||
-              !strcmp(incomingPacket.rpt_list[i].call, SAT_CALLSIGN)) {
+              !strcmp(incomingPacket.rpt_list[i].call, SATCALL_SIGN)) {
             do_repeat = true;
           }
         }
         if (do_repeat) {
           APRS_setCallsign(incomingPacket.src.call, incomingPacket.src.ssid);
-          APRS_setPath1(SAT_CALLSIGN, (DIGI_SSID | 0x40));
-          APRS_sendPkt(packetData, incomingPacket.len);
-          APRS_setCallsign(SAT_CALLSIGN, SAT_SSID);
+          APRS_setPath1(SATCALL_SIGN, (SATDIGI_SSID | 0x40));
+          APRS_sendPkt(&incomingPacket.info[0], incomingPacket.len);
+          APRS_setCallsign(SATCALL_SIGN, SATTELEM_SSID);
           APRS_setPath1("WIDE1", 1);
         }
       }
@@ -135,22 +258,108 @@ void processPacket() {
     }
   }
 }
-void loop() {
-  processPacket();
-  if(is_sending_ssdv)
-  {
-    send_next_ssdv_packet();
-  }
-  if(millis()-last_telemetry>TELEMETRY_INTERVAL && tx_is_on)
-  {
-    telemtry();
-  }
-}
-void telemtry()
-{
 
+void loop() {
+  wdt_reset();
+  processPacket();
+  if (millis() - last_telemetry_time >= TELEMETRY_INTERVAL &&
+      transmission_is_on) {
+    send_telem();
+  }
 }
-void send_next_ssdv_packet()
+void watchdogSetup(void) {
+  cli();
+  wdt_reset();
+  WDTCSR |= (1 << WDCE) | (1 << WDE);
+  WDTCSR = (1 << WDIE) | (1 << WDE) | (1 << WDP3) | (0 << WDP2) | (0 << WDP1) |
+           (1 << WDP0);
+  sei();
+}
+
+void get_gyro()
 {
-  // make sure to make  is_sending_ssdv = false if this is last ssdv packet
+  //code to get gyro sensor values
+  wdt_reset();
+}
+
+void get_temperature()
+{
+  //code to get temperature sensor values
+  wdt_reset();
+}
+
+void get_current()
+{
+  //code to get current
+  wdt_reset();  
+}
+
+void get_sensor_values()
+{
+  get_temperature();
+  get_gyro();
+  get_current();
+}
+
+void send_telem() {
+  wdt_reset();
+  TURN_OFF_VOICE_REPEATER_INPUT;
+  EEPROM.get(TX_STATUS, transmission_is_on);
+  if (voice_repeater_is_on && transmission_is_on) {
+    TURN_ON_VOICE_REPEATER_INPUT;
+  }
+  if(transmission_is_on && millis() - last_telemetry_time >= TELEMETRY_INTERVAL)
+  {
+    // Logic for seding telemetry
+    // APRS TELEMETRY FORMAT: The on-air packet telemetry format is as follows:
+    // sss = total number of resets LSB
+    // 111 = total number of resets MSB
+    // 222 = watchdog induced resets LSB
+    // 333 = watchdog induced resets MSB
+    // 444, 555 = temperature sensor 1, 2 resp
+    // 666, 777, 888 = gyrosensor 1, 2, 3 resp
+    // 999 = current
+    // AAA = battery voltage
+    // xxxxxx10, xxxxxx01 = digipeater on, voice repeater on resp
+
+    get_sensor_values();
+  
+    EEPROM.get(TOTAL_RESETS_EEPROM_ADDR, total_resets);
+    uint8_t total_resets_lsb = (total_resets & 0x00FF);
+    uint8_t total_resets_msb = ((total_resets & 0xFF00) >>8);
+    String sss = num_to_string(total_resets_lsb);
+    String resets_msb = num_to_string(total_resets_msb);
+    EEPROM.get(WD_INDUCED_RESETS_EEPROM_ADDR, wd_induced_resets);
+    uint8_t wd_induced_resets_lsb = (wd_induced_resets & 0x00FF);
+    uint8_t wd_induced_resets_msb = ((wd_induced_resets & 0xFF00) >>8);
+    String wd_lsb = num_to_string(wd_induced_resets_lsb);
+    String wd_msb = num_to_string(wd_induced_resets_msb);
+  
+    int digipeater_status = 0;
+    int voice_repeater_status = 0;
+    if(digipeater_is_on)
+    {
+      digipeater_status = 1;
+    }
+    else
+    {
+      digipeater_status = 0;
+    }
+    if(voice_repeater_is_on)
+    {
+      voice_repeater_status = 1;
+    }
+    else
+    {
+      voice_repeater_status = 0;
+    }
+    String telem_packet = "t#" + sss + "," + resets_msb + "," + wd_lsb + "," + wd_msb + "," + temp_sensor_1 + "," + temp_sensor_2 + "," + gyro_sensor_1 + "," + gyro_sensor_2 + "," + gyro_sensor_3 + "," + current + "," + battery_voltage + "," + "xxxxxx" + String(digipeater_status, DEC) + String(voice_repeater_status, DEC);
+    char buf[telem_packet.length()] = "";
+    telem_packet.toCharArray(buf, telem_packet.length());
+    wdt_reset();
+    APRS_setMessageDestination(GSCALL_SIGN, GS_SSID);
+    APRS_sendMsg(buf, strlen(buf));
+  }
+  wdt_reset();
+  last_telemetry_time = millis();
 }
