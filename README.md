@@ -98,3 +98,9 @@ where,
 2. Gyro Sensor (MPU-6050) :- [Datasheet](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf)
 
 3. Current/Power Sensor (INA219) :- [Datasheet](https://www.ti.com/lit/ds/symlink/ina219.pdf?ts=1593455980944&ref_url=https%253A%252F%252Fwww.google.com%252F)
+
+**Reference for transreceivers**
+
+1. DRA818V :- [Datasheet](http://www.dorji.com/docs/data/DRA818V.pdf)
+
+2. DRA818U :- [Datasheet](http://www.dorji.com/docs/data/DRA818U.pdf)
