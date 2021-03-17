@@ -29,7 +29,7 @@ The satellite is powered by AltaDevices Single Juntion cells ([which unfortunate
 ## How does it communicate?
 
 **_Transciever Specs_**
-    **VHF**
+-   **VHF**
 -   **Name :** [DRA818V](http://www.dorji.com/products.php?Keyword=dra818v)
 -   **Frequency Range :** 134~174 Mhz
 -   **Channel Space :** 12.5/25 KHz
