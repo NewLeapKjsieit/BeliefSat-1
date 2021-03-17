@@ -76,19 +76,20 @@ All the uplinks and downlinks occur on same frequency. Reciever is disabled whil
 
 **_APRS TELEMETRY FORMAT : The on-air packet telemetry format is as follows:_**
 
--   **T#sss,111,222,333,444,555,666,777,888,999,AAA,xxxxxxxx**
--     where sss : LSB of total number of system resets
--     111 : MSB of total number of system resets
--     222 : LSB of total number of resets induced by watch dog
--     333 : MSB of total number of resets induced by watch dog
--     444 : Temperature sensor 1 reading
--     555 : Temperature sensor 2 reading
--     666 : Gyro-sensor 1 reading
--     777 : Gyro-sensor 1 reading
--     888 : Gyro-sensor 1 reading
--     999 : Current reading
--     AAA : Voltage reading
--     xxxxxxxx : If the last two bits are 10 then digipeater is on and if they are 01 then voice repeater is on.
+**T#sss,111,222,333,444,555,666,777,888,999,AAA,xxxxxxxx**
+where,
+-    sss : LSB of total number of system resets
+-    111 : MSB of total number of system resets
+-    222 : LSB of total number of resets induced by watch dog
+-    333 : MSB of total number of resets induced by watch dog
+-    444 : Temperature sensor 1 reading
+-    555 : Temperature sensor 2 reading
+-    666 : Gyro-sensor 1 reading
+-    777 : Gyro-sensor 1 reading
+-    888 : Gyro-sensor 1 reading
+-    999 : Current reading
+-    AAA : Voltage reading
+-    xxxxxxxx : If the last two bits are 10 then digipeater is on and if they are 01 then voice repeater is on.
 
 **References for converting Sensor data into readable format**
 
