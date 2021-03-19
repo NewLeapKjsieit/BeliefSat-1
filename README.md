@@ -6,13 +6,13 @@ BeliefSat is a 2p-PocketQube standard student nano-satellite being developed by 
 
 1. If it is successfully deployed out of the SomaiyaPod and completes startup procedure (it will be dead inside the Pod and will only get power after it is out of pod)and then sends a beacon; reliability of both deployer and the design of the satellite will be confirmed.
 2. Every 1 minute, it will send a telemetry packet, which will have values from different COTS sensors. The team aims to project the activity of telemetry reception as a way of involving more students in to Software Defined Radio and RF in general.
-3. It will have a functionality as of a amateur-radio digipeater. Which means if you hold a proper Amateur radio license then you can send a 42 character message (including the spaces) to the satellite and the satellite will repeat it (after delay of upto 10 seconds depending on other important processes running on-board). Making it a utility for Amateur radio community.
+3. It will have a functionality as of a amateur-radio digipeater. Which means if you hold a proper Amateur radio license then you can send a text message to the satellite and the satellite will repeat it (after delay of upto 10 seconds depending on other important processes running on-board). Making it a utility for Amateur radio community.
 4. Not only it can digipeat a message it also hast the functionality to repeat voice. For using this functionality you need a UHF transmitter and you can send a voice message to the satellite and the satellite will repeate it (after some delay depending on other important processes running on-board). It also will be a big utility for Amateur radio community.
 5. If the satellite is able to operate for more than 3 months while responding to the commands and sending the health data at proper intervals, it will prove the reliablity of the unique design and set of COTS hardware used. Thus future mission could use flight proven hardwares for communication and power generation.
 
 ## What is it made of ?, What does it look like ?, What are its dimenssions and mass?
 
-BeliefSat's structure is made by joining plates/PCBs(made out of FR$ material). This is a very novel approach in designing the structure of a satellite. Generally, satellites are made from Aluminium or its alloys, but using our novel approach we were able to design a very sturdy but cost effective sateliite. Although this technique is generally limited to nano-satellites. The PCBs that make the structure of our satellite have the solar panels and other components embedded in itself, so the complexity of assembly is minimized.
+BeliefSat's structure is made by joining plates/PCBs(made out of FR4 material). This is a very novel approach in designing the structure of a satellite. Generally, satellites are made from Aluminium or its alloys, but using our novel approach we were able to design a very sturdy but cost effective sateliite. Although this technique is generally limited to nano-satellites. The PCBs that make the structure of our satellite have the solar panels and other components embedded in itself, so the complexity of assembly is minimized.
 
 This is a concept render of our BeliefSat:
 
@@ -29,7 +29,7 @@ The satellite is powered by AltaDevices Single Juntion cells ([which unfortunate
 ## How does it communicate?
 
 **_Transciever Specs_**
--   **VHF**
+    **VHF**
 -   **Name :** [DRA818V](http://www.dorji.com/products.php?Keyword=dra818v)
 -   **Frequency Range :** 134~174 Mhz
 -   **Channel Space :** 12.5/25 KHz
