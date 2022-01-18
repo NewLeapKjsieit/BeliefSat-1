@@ -88,6 +88,8 @@ struct EEprom
 } flag;
 
 // ANCHOR FUNCTIONS;
+//this may need changes
+
 
 // ANCHOR get_temperature();
 void get_temperature()
@@ -482,6 +484,7 @@ void setup()
     Wire.begin();
 
     //initialize the magnetometer in continuous mode
+    
     Wire.beginTransmission(i2c_addr_magnetometer);
     Wire.write(0x02); //the mode register
     Wire.write(0x00); //continuous mode
